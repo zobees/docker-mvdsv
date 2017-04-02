@@ -1,18 +1,16 @@
 FROM ubuntu
 MAINTAINER cliffrowley@gmail.com
 
+USER root
+
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get -y update && \
     apt-get install -q -y --no-install-recommends \
-    libc6-i386
+    ca-certificates build-essential git libc6-dev-i386 gcc-multilib
 
-USER root
+ENV BUILD_DIR=/build \
+    QW_DIR=/qw
 
-ENV QW_DIR=/qw
+WORKDIR $BUILD_DIR
 
-RUN mkdir $QW_DIR
-
-WORKDIR $QW_DIR
-
-ADD files/qw/mvdsv $QW_DIR/mvdsv
-ADD files/qw/LICENSE $QW_DIR/LICENSE.mvdsv
+CMD ./build.sh
